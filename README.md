@@ -448,3 +448,4 @@ There are two types of noise effects, namely,
 * https://medium.com/@einfochips/crosstalk-analysis-and-its-impact-on-timing-in-7nm-technology-abcfb795190f
 * [Synopsys platform](https://www.synopsys.com/silicon-design.html)
 * https://github.com/kunalg123/icc2_workshop_collaterals
+* https://github.com/manili/VSDBabySoC
