@@ -88,9 +88,9 @@ It is not possible to sythesis an analog design with Verilog, yet. But there is 
   
 ## ICC Compiler II
 
-![image](https://user-images.githubusercontent.com/55539862/189332908-fe14c779-4312-4738-9a86-4003f7102566.png)
+![image](https://www.techdesignforums.com/practice/files/2014/10/Short-introduction-to-IC-Compiler-II-diagram-1.jpg)
 
-* IC Compiler is the industry leading place-and-route system for established and emerging
+* [IC Compiler](https://www.synopsys.com/implementation-and-signoff/physical-implementation/ic-compiler.html#:~:text=IC%20Compiler%20II%20includes%20innovative,manufacturing%20compliance%2C%20and%20signoff%20closure.) is the industry leading place-and-route system for established and emerging
 process technology node designs.
 * Multicore support throughout the flow delivers improved productivity. New technologies,
 like concurrent clock and data (CCD) with clock concurrent optimization, PrimeTime
@@ -446,3 +446,5 @@ There are two types of noise effects, namely,
 * https://github.com/bharath19-gs/vsdriscv
 * https://github.com/bharath19-gs/avsdpll28nm
 * https://medium.com/@einfochips/crosstalk-analysis-and-its-impact-on-timing-in-7nm-technology-abcfb795190f
+* [Synopsys platform](https://www.synopsys.com/silicon-design.html)
+* https://github.com/kunalg123/icc2_workshop_collaterals
