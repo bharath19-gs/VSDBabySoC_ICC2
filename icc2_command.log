@@ -1,0 +1,7 @@
+#@ # 
+#@ # Running icc2_shell Version T-2022.03 for linux64 -- Feb 28, 2022
+#@ # Date:   Thu Sep 15 19:11:11 2022
+#@ # Run by: bharath@ip-172-16-1-115.ap-south-1.compute.internal
+#@ 
+
+source standaloneFlow/top.tcl
