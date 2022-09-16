@@ -8,8 +8,6 @@
        + [ VSDBABYSoC](#vsdbabysoc)
 
   * [ICC2 COMPILER](##icc-compiler-ii) 
-      +  [Milkyway Reference Libraries](#1-milkyway-reference-libraries)
-      +  [Technology File (.tf file)](#2-technology-file-tf-file)
       +  [ICC Design Planning Flow](#icc-design-planning-flow)
       +  [Create the Starting Floorplan](#create-the-starting-floorplan)
       +  [Connecting Power and Ground Ports](#connecting-power-and-ground-ports)
@@ -108,10 +106,17 @@ manufacturability and deliver faster turn-around-time.
 metal fill solution allowing designers to mitigate manufacturing compliance challenges in
 the implementation stage for faster signoff closure.
 
-![image](https://user-images.githubusercontent.com/55539862/189331113-3078e99c-6cc8-4817-ab80-e15b7e32719b.png)
+## ICC Design Planning Flow
+
+![image](https://github.com/bharath19-gs/VSDBabySoC_ICC2/blob/main/images/image1.PNG)
 
 
-### 1. Milkyway Reference Libraries
+
+### 1. Data setup
+we are going to load the tool with necessary synthesis data, physical design data, technlogy file, RC parastic model files.
+we will create a milkyway design library and initial design CEL.
+
+Milkyway Reference Libraries
 Information is stored in so-called “views”, for example:
 * CEL: The full layout view
 * FRAM: The abstract view used for P&R
@@ -120,7 +125,9 @@ libraries do not have to be stored within the Milkyway library structure, but ca
 anywhere else. IC Compiler only reads logical libraries (.db) specified through the link_library
 variable.
 
-### 2. Technology File (.tf file)
+![image](https://github.com/bharath19-gs/VSDBabySoC_ICC2/blob/main/images/image2.PNG)
+
+#### 1. Technology File (.tf file)
 * Tech File is unique to each technology
 * Contains metal layer technology parameters:
 * Number and name designations for each layer/via
@@ -148,94 +155,94 @@ defaultWidth = 0.23
 minWidth = 0.23
 minSpacing = 0.23
 
-## ICC Design Planning Flow
-
-![image](https://user-images.githubusercontent.com/55539862/189333614-8b2fbdcd-95ab-4c15-a918-1c2576a39824.png)
 
 If the design contains black boxes or the netlist is dirty, use the read_mw_verilog command in place of
 import_designs.
 Also include adding of power pads (VSS,VDD) and insertion of pad fillers;
 
-# Create the Starting Floorplan
 
-![image](https://user-images.githubusercontent.com/55539862/189334457-294543eb-bfad-473d-b262-c2864512125a.png)
-
-## Connecting Power and Ground Ports
-The macro cells and modules in your design contain power and ground pins that must be
-connected before initializing the floorplan. The derive_pg_connection command (or Preroute >
-Derive PG Connection in the GUI) connects power, ground, and tie-off pins to power and ground
-nets.
-You can perform automatic power and ground connections for the power and ground pins of cells in
-the design, as well as direct rail-tie connections to power and ground nets by using the
-derive_pg_connection command. This is the only recommended method for creating a power
-and ground (PG) network for nonmultivoltage designs. Use this command before using any of the
-optimization commands.
-
-## Floorplan After Initialization
-
+### 2. Design planning 
+This stage we start creating floorplan and iterate over it to get a optimised design.
+Floorplan is the first step for actual Physical design flow.
+ so what does floorplan have?
+  - core size, shape and placement rows
+  - Peripheries i.e., IO, Power and pad cell locations
+  - Macro cell placements
+  - Power grids
+  - With all the above modules it ***tentatively*** places them at an early stage when details such as area,size,shape, pin position etc are not yet fixed
+ 
+ ![floorplaning]()
+ 
+ #### Floorplan After Initialization
 
 ![image](https://user-images.githubusercontent.com/55539862/189334741-4ce7c848-59a7-4b41-a973-145891b66de4.png)
 hierarchies can be black boxes in the tool.
 
-## Planning I/Os and Flip-Chip Bumps
+ 
+ 
+### 3. Placement
+Now, placement is the next main step, as after getting a good floorplan. Placement requires optimal macro placement, core and die areas defined, placement blockages defined, power grid pushed down, pre-route.
+Placement is the process of determining the location of each module defined in design planning stage(floorplan). 
+Placement includes Scan chain reordering and High fan out net synthesis.
 
-After creating the floorplan, you can instantiate the I/O drivers and bump cells for your design. The IC Compiler II tool supports advanced features for unconstrained and constraint-based placement of I/O drivers and flip-chip bump cells. You can create I/O placement constraints and specify the ordering, xy coordinate, and placement side for each I/O. The tool supports both package-driven and die-driven I/O placement flows, and you can adapt the tool for different chip packaging scenarios. Different I/O driver styles, such as pads with integrated drivers, are supported by the tool.
-
-![image](https://user-images.githubusercontent.com/55539862/189337136-727ae704-0ded-41be-8b87-ff94f5ef9a8d.png)
-
-## Creating a 3DIC Design
-
-In a 3DIC design, two or more die are directly stacked vertically to create a complete design or system that contains multiple dies. In a 2.5D IC design, one or more die are mounted on an interposer; the interposer also connects the die to each other and to the package. The interposer can be manufactured from various materials including silicon or glass.
-
-
-![image](https://user-images.githubusercontent.com/55539862/189337295-cf935b53-10f4-4116-9478-070c5174ed3b.png)
-
-## Managing Design Blocks
-
-To manage design blocks, the IC Compiler II tool supports operations to easily partition your design and commit a logical hierarchy cell to a physical hierarchy block early in the design flow. After committing to blocks, you can create multiple optimized, abstract views for design blocks that contain only the information needed to perform placement, timing, and other tasks. This approach enables you to minimize the system requirements needed to efficiently distribute and process very large designs.
-
-![image](https://user-images.githubusercontent.com/55539862/189337398-17110f3e-ab6f-40a6-ba54-9e6d09b53d01.png)
-
-## Performing Block Shaping and Macro Placement
-
-The block shaping flow refines the boundary for the block based on the rough rectangular or rectilinear shape defined during hierarchy exploration. When creating the block shape, the tool considers design constraints such as target utilization for the block, channel width and keepout settings, while minimizing feedthroughs and interface wire lengths. You can create an optional block grid for your design; the tool aligns block shapes to the grid.
+![placement]()
 
 
-![image](https://user-images.githubusercontent.com/55539862/189337688-34a41c90-07d1-4ada-a021-836f075a89c5.png)
-
-
-
-
-## Performing Power Planning
+#### Performing Power Planning
 
 Power planning, which includes power network routing and power network analysis, is required to create a design with good power integrity. A design with a robust power and ground (PG) grid reduces IR drop and electromigration by providing an adequate number of power and ground pads and rails. The power plan can be used to assess the routing resources consumed by the power nets and to determine the impact on routability due to the power plan. You can experiment with different power plans or fine-tune the existing power plan by modifying the command option settings and regenerating the power plan.
 
 ![image](https://user-images.githubusercontent.com/55539862/189337827-ba9569af-32cf-4420-ac3e-085044bf69c9.png)
 
 
-## Performing Global Planning
 
-To improve global routing between design blocks during the design planning phase, the IC Compiler II tool supports operations to group similar nets, create global routing corridors, and push global route objects into blocks. Global planning enables you to better manage routing resources between blocks. You typically use global bus planning after running block shaping and macro placement.
+### 4. Clock tree synthesis
+Clock tree synthsis(CTS) requires the placement step to be completed, power & ground nets *prerouted*, estimated setup timing in acceptable range, estimated logical DRC in accepatbel range.
+now, we should make sure that all the blocks on the chip get clock at the same time, so we will be basically distributing the clock. so the GOALs of CTS is 
+ - Meet clock tree targets i.e., Skew, min period, power, latency, pulse width etc.
+ - Meet clock tree DRC i.e., Capacitance, fanout, buffer levels etc.
 
-## Performing Clock Trunk Planning
+![CTS]()
+
+#### Performing Clock Trunk Planning
 
 To manage clock trunks during design planning, the tool supports clock trunk planning. A clock trunk is a coarse-grain physical distribution of the clock, which starts at the clock source and ends at the clock trunk endpoint. 
 
 ![image](https://user-images.githubusercontent.com/55539862/189338062-856e74b2-9475-484c-b749-61fb98d29c40.png)
 
-## Performing Pin Assignment
+#### Performing Timing Budgeting
+
+To support a hierarchical design flow, the IC Compiler II tool provides timing budgeting to allocate timing among the blocks in the design. The budgeting process begins by partitioning the chip-level timing constraints into top-level and block-level constraints. To speed the budget creation process, the tool creates lightweight timing abstract representations for the blocks in the design. Each block is virtually optimized to negate the effects of high-fanout nets and provide more accurate timing estimations. The timing budgeter uses the optimized timing for each block to derive new budgets. In the final step, top-level and block-level timing budgets are written out in preparation for further block-level optimization. The timing budgeter is fully multimode and multicorner aware, and handles designs with multiply instantiated blocks.
+
+
+![image](https://user-images.githubusercontent.com/55539862/189338325-e40637d5-9bb6-4589-bb8f-d8b3c9e576d9.png)
+
+
+### 5. Routing
+ After placement and CTS, we do routing, at this stage all the blocks, pins etc that have been optimisingly placed at the placement stage are taken into consideration and trying to find a suitable paths on the avaiable layout space.
+ Routing simply means drawing paths from the source to destination in a layout.
+ Once routing is done, precise paths are defined on the layout surface, on which conductors carying elecrical signals are run.
+ Routing can be broken down into :
+ 1. Grid routing 
+ 2. Global routing
+ 3. Detail routing
+
+Note : actual routing happens in Detail routing phase, where atual wires are layed down.
+
+![routing]()
+
+#### Performing Pin Assignment
 
 The IC Compiler II tool provides extensive control over pin placement and feedthrough creation during floorplanning. Pin placement is based on global routing and can be guided by user-defined constraints. You can make minimal changes to an existing pin placement by changing constraints and running pin assignment in incremental mode.
 
 
 ![image](https://user-images.githubusercontent.com/55539862/189338205-1719fd7f-11b1-4370-9734-d57f8cc3ea0b.png)
 
-## Performing Timing Budgeting
-
-To support a hierarchical design flow, the IC Compiler II tool provides timing budgeting to allocate timing among the blocks in the design. The budgeting process begins by partitioning the chip-level timing constraints into top-level and block-level constraints. To speed the budget creation process, the tool creates lightweight timing abstract representations for the blocks in the design. Each block is virtually optimized to negate the effects of high-fanout nets and provide more accurate timing estimations. The timing budgeter uses the optimized timing for each block to derive new budgets. In the final step, top-level and block-level timing budgets are written out in preparation for further block-level optimization. The timing budgeter is fully multimode and multicorner aware, and handles designs with multiply instantiated blocks.
+### 6. Chip finishing
 
 
-![image](https://user-images.githubusercontent.com/55539862/189338325-e40637d5-9bb6-4589-bb8f-d8b3c9e576d9.png)
+
+
 ## RVMYTH CORE IN VSDBABYSOC 
 
 ### Stages of Physical Design Flow
@@ -248,7 +255,7 @@ To support a hierarchical design flow, the IC Compiler II tool provides timing b
 
  
  For more explanation of STA and Synthesis refer:
- [Adavnced Synthesis and STA Using Design Compiler]( https://github.com/ireneann713/AdvancedSynthesisandSTAwithDC)
+ [Adavnced Synthesis and STA Using Design Compiler](https://github.com/bharath19-gs/AdvancedSynthesisandSTAwithDC)
  
  ### Floorplan
  
@@ -449,3 +456,4 @@ There are two types of noise effects, namely,
 * [Synopsys platform](https://www.synopsys.com/silicon-design.html)
 * https://github.com/kunalg123/icc2_workshop_collaterals
 * https://github.com/manili/VSDBabySoC
+* https://prezi.com/-jmhi72feify/ic-compiler/
