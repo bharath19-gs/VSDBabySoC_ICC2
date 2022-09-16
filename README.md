@@ -171,21 +171,12 @@ Floorplan is the first step for actual Physical design flow.
   - Power grids
   - With all the above modules it ***tentatively*** places them at an early stage when details such as area,size,shape, pin position etc are not yet fixed
  
- ![floorplaning]()
+ ![floorplaning](https://github.com/bharath19-gs/VSDBabySoC_ICC2/blob/main/images/floorplanning.PNG)
  
  #### Floorplan After Initialization
 
 ![image](https://user-images.githubusercontent.com/55539862/189334741-4ce7c848-59a7-4b41-a973-145891b66de4.png)
 hierarchies can be black boxes in the tool.
-
- 
- 
-### 3. Placement
-Now, placement is the next main step, as after getting a good floorplan. Placement requires optimal macro placement, core and die areas defined, placement blockages defined, power grid pushed down, pre-route.
-Placement is the process of determining the location of each module defined in design planning stage(floorplan). 
-Placement includes Scan chain reordering and High fan out net synthesis.
-
-![placement]()
 
 
 #### Performing Power Planning
@@ -193,16 +184,6 @@ Placement includes Scan chain reordering and High fan out net synthesis.
 Power planning, which includes power network routing and power network analysis, is required to create a design with good power integrity. A design with a robust power and ground (PG) grid reduces IR drop and electromigration by providing an adequate number of power and ground pads and rails. The power plan can be used to assess the routing resources consumed by the power nets and to determine the impact on routability due to the power plan. You can experiment with different power plans or fine-tune the existing power plan by modifying the command option settings and regenerating the power plan.
 
 ![image](https://user-images.githubusercontent.com/55539862/189337827-ba9569af-32cf-4420-ac3e-085044bf69c9.png)
-
-
-
-### 4. Clock tree synthesis
-Clock tree synthsis(CTS) requires the placement step to be completed, power & ground nets *prerouted*, estimated setup timing in acceptable range, estimated logical DRC in accepatbel range.
-now, we should make sure that all the blocks on the chip get clock at the same time, so we will be basically distributing the clock. so the GOALs of CTS is 
- - Meet clock tree targets i.e., Skew, min period, power, latency, pulse width etc.
- - Meet clock tree DRC i.e., Capacitance, fanout, buffer levels etc.
-
-![CTS]()
 
 #### Performing Clock Trunk Planning
 
@@ -216,6 +197,27 @@ To support a hierarchical design flow, the IC Compiler II tool provides timing b
 
 
 ![image](https://user-images.githubusercontent.com/55539862/189338325-e40637d5-9bb6-4589-bb8f-d8b3c9e576d9.png)
+ 
+ 
+### 3. Placement
+Now, placement is the next main step, as after getting a good floorplan. Placement requires optimal macro placement, core and die areas defined, placement blockages defined, power grid pushed down, pre-route.
+Placement is the process of determining the location of each module defined in design planning stage(floorplan). 
+Placement includes Scan chain reordering and High fan out net synthesis.
+
+![placement](https://github.com/bharath19-gs/VSDBabySoC_ICC2/blob/main/images/placement.PNG)
+
+
+### 4. Clock tree synthesis
+Clock tree synthsis(CTS) requires the placement step to be completed, power & ground nets *prerouted*, estimated setup timing in acceptable range, estimated logical DRC in accepatbel range.
+now, we should make sure that all the blocks on the chip get clock at the same time, so we will be basically distributing the clock. so the GOALs of CTS is 
+ - Meet clock tree targets i.e., Skew, min period, power, latency, pulse width etc.
+ - Meet clock tree DRC i.e., Capacitance, fanout, buffer levels etc.
+
+![CTS](https://github.com/bharath19-gs/VSDBabySoC_ICC2/blob/main/images/CTS.PNG)
+
+
+
+
 
 
 ### 5. Routing
@@ -229,7 +231,7 @@ To support a hierarchical design flow, the IC Compiler II tool provides timing b
 
 Note : actual routing happens in Detail routing phase, where atual wires are layed down.
 
-![routing]()
+![routing](https://github.com/bharath19-gs/VSDBabySoC_ICC2/blob/main/images/routing.PNG)
 
 #### Performing Pin Assignment
 
@@ -239,8 +241,15 @@ The IC Compiler II tool provides extensive control over pin placement and feedth
 ![image](https://user-images.githubusercontent.com/55539862/189338205-1719fd7f-11b1-4370-9734-d57f8cc3ea0b.png)
 
 ### 6. Chip finishing
+ - All the files that have been updated in the previous above steps are used here as blocks
+ - The blocks are placed modules, routed modules, all the timing met, logical and Physical DRC satified.
+ - this is usually the Physical Verification of the VLSI design cycle.
 
 
+
+## Final validation 
+
+![final-validation](https://github.com/bharath19-gs/VSDBabySoC_ICC2/blob/main/images/final_validation.PNG)
 
 
 ## RVMYTH CORE IN VSDBABYSOC 
@@ -351,13 +360,15 @@ Placement does not just place the standard cell available in the synthesized net
  
   * Routing is the stage after CTS and optimization where exact paths for the interconnection of standard cells and macros and I/O
 pins are determined. Electrical connections using metals and vias are created in the layout, defined by the
-logical connections present in the netlist (i.e. Logical connectivity converted as physical connectivity). After CTS, we have information of all the placed cells, blockages, clock tree buffers/inverters and I/O pins
-
-![image](https://user-images.githubusercontent.com/55539862/189543551-d0ebc0ed-e782-489a-9384-99dde6966125.png)
+logical connections present in the netlist (i.e. Logical connectivity converted as physical connectivity). 
 
 Cells placed inside the core area:
 
 ![image](https://user-images.githubusercontent.com/55539862/189545454-75beed6e-cedf-487b-8c9e-1c5a5a2651cc.png)
+
+After CTS, we have information of all the placed cells, blockages, clock tree buffers/inverters and I/O pins
+
+![image](https://user-images.githubusercontent.com/55539862/189543551-d0ebc0ed-e782-489a-9384-99dde6966125.png)
 
 
 
@@ -456,4 +467,5 @@ There are two types of noise effects, namely,
 * [Synopsys platform](https://www.synopsys.com/silicon-design.html)
 * https://github.com/kunalg123/icc2_workshop_collaterals
 * https://github.com/manili/VSDBabySoC
-* https://prezi.com/-jmhi72feify/ic-compiler/
+* https://prezi.com/-jmhi72feify/ic-compiler/  -- Kehkashan Khan presentation(images refernces - prezi)
+
