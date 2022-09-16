@@ -233,12 +233,6 @@ Note : actual routing happens in Detail routing phase, where atual wires are lay
 
 ![routing](https://github.com/bharath19-gs/VSDBabySoC_ICC2/blob/main/images/routing.PNG)
 
-#### Performing Pin Assignment
-
-The IC Compiler II tool provides extensive control over pin placement and feedthrough creation during floorplanning. Pin placement is based on global routing and can be guided by user-defined constraints. You can make minimal changes to an existing pin placement by changing constraints and running pin assignment in incremental mode.
-
-
-![image](https://user-images.githubusercontent.com/55539862/189338205-1719fd7f-11b1-4370-9734-d57f8cc3ea0b.png)
 
 ### 6. Chip finishing
  - All the files that have been updated in the previous above steps are used here as blocks
